@@ -52,31 +52,26 @@ public class MainActivity extends Activity {
 		working = true;
 		final Ringtone r = RingtoneManager.getRingtone(
 		getApplicationContext(), notification);
-		
-		// this message goes away right away and changes to seconds
-		// remaining
-		// i could ignore this problem and just do Great job: seconds
-		// remain
-		// or i could figure out how to make it wait ~5 seconds then go
-		// onto the next message...
-		// something to do with ontick idk not gonna mess with it now
-
-		//why is this being set to just be overwritten
-		//mMainText.setText("Great job!");
-	
+		r.play();
 
 		new CountDownTimer(goalCoolDownTimer * 1000 *60, 1000) {
 
 			public void onTick(long millisUntilFinished) {
-				mMainText.setText("seconds remaining: "
-						+ millisUntilFinished / 1000);
+				//Display "Great Job" for the first 5 seconds
+				if ((goalCoolDownTimer * 1000*60) - millisUntilFinished < 5000){
+					mMainText.setText("Great job!");
+				}
+				else{
+					mMainText.setText("seconds remaining: "
+							+ millisUntilFinished / 1000);
+				}
 			}
 
 			public void onFinish() {
-				mMainText.setText("done!");
 				r.play();
 				/*
-				Alarm does not work
+				Alarm does not work on emulator
+				the emulator is missing the sound files
 				Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
 				i.putExtra(AlarmClock.EXTRA_HOUR, 0);
 				i.putExtra(AlarmClock.EXTRA_MINUTES, goalCoolDownTimer);
@@ -103,12 +98,18 @@ public class MainActivity extends Activity {
 		working = true;
 		final Ringtone r = RingtoneManager.getRingtone(
 				getApplicationContext(), notification);
-		mMainText.setText("You really should be working right now!");
-		new CountDownTimer(punishmentTimer * 1000, 1000) {
+		
+		new CountDownTimer(punishmentTimer * 1000 * 60, 1000) {
 
 			public void onTick(long millisUntilFinished) {
-				mMainText.setText("seconds remaining: "
-						+ millisUntilFinished / 1000);
+				//Display message for the first 5 seconds
+				if ((punishmentTimer * 1000*60) - millisUntilFinished < 5000){
+					mMainText.setText("You really should be working right now!");
+				}
+				else{
+					mMainText.setText("seconds remaining: "
+							+ millisUntilFinished / 1000);
+				}
 			}
 
 			public void onFinish() {
